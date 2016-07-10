@@ -1,0 +1,15 @@
+[package]
+name = "git-metafile"
+version = "0.1.0"
+authors = ["Jakub Jirutka <jakub@jirutka.cz>"]
+description = """
+A simple tool for storing and restoring files metadata (mode, owner, group) \
+in a git repository. It's designed especially for versioning /etc.
+"""
+homepage = "https://github.com/jirutka/git-metafile"
+repository = "https://github.com/jirutka/git-metafile"
+readme = "README.adoc"
+keywords = ["git", "cli", "tool"]
+license = "MIT"
+
+[dependencies]

@@ -1,0 +1,20 @@
+= Git Metafile
+Jakub Jirutka <https://github.com/jirutka[@jirutka]>
+//custom
+:name: git-metafile
+:gh-name: jirutka/{name}
+:gh-branch: master
+
+ifdef::env-github[]
+image:https://travis-ci.org/{gh-name}.svg?branch={gh-branch}["Build Status", link="https://travis-ci.org/{gh-name}"]
+endif::env-github[]
+
+A simple tool for storing and restoring files metadata (mode, owner, group) in a git repository.
+It's designed especially for versioning /etc.
+
+TODO
+
+== License
+
+This project is licensed under http://opensource.org/licenses/MIT/[MIT License].
+For the full text of the license, see the link:LICENSE[LICENSE] file.
