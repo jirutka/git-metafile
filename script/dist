@@ -1,0 +1,36 @@
+#!/bin/sh
+# vim: set ts=4:
+set -eu
+
+cd "$(dirname $0)/.."
+. script/utils.sh
+
+if [ -z "${TARGET:-}" ]; then
+	echo 'Please specify TARGET triple for which the code should be compiled.' >&2
+	die 'Variable TARGET is not set!'
+fi
+
+
+einfo 'Building release artifact...'
+
+cargo build --target $TARGET --release
+
+
+einfo 'Building release tarball...'
+
+pkg_name="$(json_attr name "$(cargo read-manifest)")"
+pkg_version="$(json_attr version "$(cargo read-manifest)")"
+dist_name="$pkg_name-$pkg_version-$TARGET"
+dist_dir="target/dist/$dist_name"
+
+rm -Rf ./"$dist_dir".*
+
+mkdir -p "$dist_dir"/bin
+cp -v target/$TARGET/release/$pkg_name "$dist_dir"/bin/
+cp -v README.* LICENSE* "$dist_dir"/
+
+cd "$(dirname "$dist_dir")"
+tar -czf "$dist_name.tar.gz" *
+
+echo ''
+echo "Completed: $dist_dir.tar.gz ($(du -h *.tar.gz | cut -f1))"

@@ -32,3 +32,19 @@ install:
 script:
   - cargo build --target $TARGET --verbose
   - cargo test --target $TARGET
+
+before_deploy:
+  - script/dist
+
+deploy:
+  provider: releases
+  api_key:
+    secure: o8N6cEWt0hY77vVpP+9/PtZ6UpqXhF4ZPgA1ccgiuJHyb8AgtsxdYusy6Be9enGRSCs1z2dwVyeLGtrvPyfikRf3i0KEs+Y1dPm7MEeD8QuXAZTkzGWTAdcssERs8LtueIj1mOCsr7+dc+W9d9uqKx7lsty2L9OPAdGmLVSOoVeYQ+/regjUQbon8zTdtCungCmNDE9Vgx2yGAMuXzCY8l1v1q427Xp8Rd8q3u5AhocMio8oiOYlKTcFXURt7fVLekI6P/4CogrAip/v5PKlmF9lP2duPIv3dfskxG5mRsbnRn9hKa8AVLJfkPvdoDmsLelUsb7bGs1iEfr4ESmMCNVx8eWXhyK+Y3Uxv/GtjijAnKEXDa6B1Rq8B+CmqzzKPbJ9+KDprNXxUCQtDAxRX1V0r3qy93ItHd/NNTX5EIZbJzkH2nywDYIeDxmJa94Q9gsEKk29SsWLtU67TpdCltxH6d8ysGQvZVhyByY1duiGOTt2RDT9MYbF3wQqSlqAtfcO8K43CK+pYMZBKa2OEGRJDlMqbkI+8uiFLX6jaSKCiFqX5HBaoMkoEIYX3oH/LOW1I2GHIqNd1iqVJL9T8qEmEuVM3AcBNFNcoKpFJ1K1yRRQmWnwYpKdOxSMLmYTrlDP1en9GL4cWkjN3EgsYX/0F2zsp72fpDSvO8DAwpc=
+  file: target/dist/*.tar.gz
+  file_glob: true
+  # Don't delete the artifacts from previous phases.
+  skip_cleanup: true
+  # Deploy when a new version tag is pushed.
+  on:
+    tags: true
+    condition: $TRAVIS_RUST_VERSION == stable && $TRAVIS_TAG =~ v[0-9]+.[0-9]+.[0-9]+

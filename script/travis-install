@@ -2,10 +2,17 @@
 # vim: set ts=4:
 set -eu -o pipefail
 
-echo -e '\n==> Uninstalling system-provided Rust...'
+cd "$(dirname $0)/.."
+source script/utils.sh
+
+
+einfo 'Uninstalling system-provided Rust...'
+
 sh ~/rust/lib/rustlib/uninstall.sh
 
-echo -e '\n==> Installing rustup...'
+
+einfo 'Installing rustup...'
+
 curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=$TRAVIS_RUST_VERSION
 
 if [ "$HOST" != "$TARGET" ]; then

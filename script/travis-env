@@ -2,11 +2,14 @@
 # vim: set ts=4:
 set -eu
 
+source "$(dirname $0)/utils.sh"
+
+
 host-triplet() {
 	case "$TRAVIS_OS_NAME" in
 		linux) echo "$(uname -m)-unknown-linux-gnu" ;;
 		osx) echo "$(uname -m)-apple-darwin" ;;
-		*) echo "ERROR: Unknown OS: $TRAVIS_OS_NAME" >&2; return 1 ;;
+		*) die "Unknown OS: $TRAVIS_OS_NAME" ;;
 	esac
 }
 
@@ -14,16 +17,14 @@ target-triplet() {
 	case "$TRAVIS_OS_NAME" in
 		linux) echo "$TARGET_CPU-unknown-linux-${TARGET_OS/host/gnu}" ;;
 		osx) echo "$TARGET_CPU-apple-darwin" ;;
-		*) echo "ERROR: Unknown OS: $TRAVIS_OS_NAME" >&2; return 1 ;;
+		*) die "Unknown OS: $TRAVIS_OS_NAME" ;;
 	esac
 }
+
 
 case "$1" in
 	host-triplet | target-triplet)
 		eval "$1"
 	;;
-	*)
-		echo "ERROR: Unknown command: $1" >&2
-		exit 1
-	;;
+	*) die "Unknown command: $1" ;;
 esac
