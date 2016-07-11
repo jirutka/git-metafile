@@ -41,22 +41,22 @@ fn apply(mf_path: &Path, parse_strict: bool) {
         match MetafileEntry::from_path(&entry.path) {
             Ok(current) => {
                 let expected = entry;
-                let path = &expected.path;
+                let path = &expected.path.display();
 
                 if expected.mode != current.mode {
-                    info!("{:?}: change mode {:o} -> {:o}", &path, current.mode, expected.mode);
-                    fs::set_permissions(path, Permissions::from_mode(expected.mode))
-                        .unwrap_or_else(|e| err!("{:?}: {}", path, e));
+                    info!("{}: change mode {:o} -> {:o}", &path, current.mode, expected.mode);
+                    fs::set_permissions(&expected.path, Permissions::from_mode(expected.mode))
+                        .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
                 if expected.uid != current.uid {
-                    info!("{:?}: change owner {} -> {}", &path, current.uid, expected.uid);
-                    unistd::chown(path, Some(expected.uid), None)
-                        .unwrap_or_else(|e| err!("{:?}: {}", path, e));
+                    info!("{}: change owner {} -> {}", &path, current.uid, expected.uid);
+                    unistd::chown(&expected.path, Some(expected.uid), None)
+                        .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
                 if expected.gid != current.gid {
-                    info!("{:?}: change group {} -> {}", &path, current.gid, expected.gid);
-                    unistd::chown(path, None, Some(expected.gid))
-                        .unwrap_or_else(|e| err!("{:?}: {}", path, e));
+                    info!("{}: change group {} -> {}", &path, current.gid, expected.gid);
+                    unistd::chown(&expected.path, None, Some(expected.gid))
+                        .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
             },
             Err(e) => err!("warning: {}", e),
