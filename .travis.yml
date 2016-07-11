@@ -1,9 +1,34 @@
-os:
-  - linux
-  - osx
+sudo: false
 language: rust
+cache: cargo
+
 rust:
   - stable
   - beta
   - nightly
-sudo: false
+os:
+  - linux
+  - osx
+env:
+  matrix:
+    - TARGET_CPU=x86_64 TARGET_OS=host
+    - TARGET_CPU=x86_64 TARGET_OS=musl  # only for linux
+    - TARGET_CPU=i686 TARGET_OS=musl  # only for linux
+matrix:
+  exclude:
+    - os: osx
+      env: TARGET_CPU=x86_64 TARGET_OS=musl
+    - os: osx
+      env: TARGET_CPU=i686 TARGET_OS=musl
+
+before_install:
+  - export PATH="$PATH:$HOME/.cargo/bin"
+  - export HOST="$(script/travis-env host-triplet)"
+  - export TARGET="$(script/travis-env target-triplet)"
+
+install:
+  - script/travis-install
+
+script:
+  - cargo build --target $TARGET --verbose
+  - cargo test --target $TARGET
