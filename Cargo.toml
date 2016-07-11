@@ -1,6 +1,6 @@
 [package]
 name = "git-metafile"
-version = "0.1.0"
+version = "0.1.1-pre"
 authors = ["Jakub Jirutka <jakub@jirutka.cz>"]
 description = """
 A simple tool for storing and restoring files metadata (mode, owner, group) \
