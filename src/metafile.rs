@@ -156,7 +156,7 @@ impl MetafileEntry {
 
     pub fn dump(&self, dest: &mut Write) -> Result<()> {
         writeln!(dest, "{}\t{:o}\t{}\t{}",
-                 self.path.to_string_lossy(), self.mode, self.uid, self.gid)
+                self.path.display(), self.mode, self.uid, self.gid)
             .map_err(MetafileError::from)
     }
 }
