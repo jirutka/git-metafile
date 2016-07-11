@@ -18,7 +18,7 @@ macro_rules! err {
 
 macro_rules! info {
     ( $( $arg:tt )* ) => ({
-        if $crate::VERBOSE_ENABLED.load(std::sync::atomic::Ordering::Relaxed) {
+        if ! $crate::QUIET_ENABLED.load(std::sync::atomic::Ordering::Relaxed) {
             println!($( $arg )*);
         }
     })

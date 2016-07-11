@@ -26,7 +26,7 @@ const PRG_VERSION: &'static str =
     concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
 const DEFAULT_FILE_NAME: &'static str = ".metafile";
 
-static VERBOSE_ENABLED: AtomicBool = ATOMIC_BOOL_INIT;
+static QUIET_ENABLED: AtomicBool = ATOMIC_BOOL_INIT;
 
 
 // TODO refactor and improve error handling
@@ -83,8 +83,8 @@ fn save(mf_path: &Path) {
 fn main() {
     let mut command = String::new();
     let mut file_path = PathBuf::new();
+    let mut quiet = false;
     let mut strict = false;
-    let mut verbose = false;
 
     tap! { ArgumentParser::new();
         .set_description("Store and restore files metadata (mode, owner and group) in a git repository."),
@@ -96,19 +96,19 @@ fn main() {
             .add_option(&["-f", "--file"], Parse,
                 r#"Path of the metafile (default is ".metafile" in git's top-level directory)"#),
 
+        .refer(&mut quiet)
+            .add_option(&["-q", "--quiet"], StoreTrue, "Be quite, suppress info messages"),
+
         .refer(&mut strict)
             .add_option(&["-s", "--strict"], StoreTrue,
                 "Switch parser to strict mode, i.e. exit after first error"),
-
-        .refer(&mut verbose)
-            .add_option(&["-v", "--verbose"], StoreTrue, "Be verbose"),
 
         .add_option(&["-V", "--version"], Print(PRG_VERSION.into()), "Show version"),
 
         .parse_args_or_exit(),
     };
 
-    VERBOSE_ENABLED.store(verbose, Ordering::Relaxed);
+    QUIET_ENABLED.store(quiet, Ordering::Relaxed);
 
     if file_path.as_os_str().is_empty() {
         file_path = match git::repo_root() {
