@@ -1,4 +1,5 @@
 use std::convert::From;
+use std::fmt::{self, Display};
 use std::fs::File;
 use std::io::{BufRead, BufReader, BufWriter, Error as IoError, Read, Write};
 use std::num::ParseIntError;
@@ -155,8 +156,15 @@ impl MetafileEntry {
     }
 
     pub fn dump(&self, dest: &mut Write) -> Result<()> {
-        writeln!(dest, "{}\t{:o}\t{}\t{}",
-                self.path.display(), self.mode, self.uid, self.gid)
+        writeln!(dest, "{}", self.to_string())
             .map_err(MetafileError::from)
+    }
+}
+
+impl Display for MetafileEntry {
+
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}\t{:o}\t{}\t{}",
+               self.path.display(), self.mode, self.uid, self.gid)
     }
 }
