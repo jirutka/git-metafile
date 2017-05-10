@@ -77,6 +77,36 @@ cd {name}
 cp target/release/{name} /usr/local/bin
 
 
+== How to use
+
+To automatically record files attributes on every commit and restore them on every checkout, set up git hooks:
+
+[source, sh]
+----
+cat >> .git/hooks/pre-commit <<EOF
+#!/bin/sh
+
+git-metafile save && git add .metafile
+EOF
+
+chmod +x .git/hooks/pre-commit
+
+cat >> .git/hooks/post-checkout <<EOF
+#!/bin/sh
+
+git-metafile apply
+EOF
+
+chmod +x .git/hooks/post-checkout
+ln -s post-checkout .git/hooks/post-rewrite
+----
+
+This should work for all basic operations, so you don’t need to think about it anymore.
+However, you have to be careful when rebasing – no hook is run when git checkouts files during rebase and _before_ committing changes done in rebase mode!
+
+To record changes or restore files attributes manually, you can run `git metafile save` or `git metafile apply` respectively.
+
+
 == License
 
 This project is licensed under http://opensource.org/licenses/MIT/[MIT License].
