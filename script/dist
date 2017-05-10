@@ -29,6 +29,8 @@ mkdir -p "$dist_dir"/bin
 cp -v target/$TARGET/release/$pkg_name "$dist_dir"/bin/
 cp -v README.* LICENSE* "$dist_dir"/
 
+strip "$dist_dir"/bin/$pkg_name
+
 cd "$(dirname "$dist_dir")"
 tar -czf "$dist_name.tar.gz" *
 
