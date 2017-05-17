@@ -6,11 +6,6 @@ cd "$(dirname $0)/.."
 source script/utils.sh
 
 
-einfo 'Uninstalling system-provided Rust...'
-
-sh ~/rust/lib/rustlib/uninstall.sh
-
-
 einfo 'Installing rustup...'
 
 curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain=$TRAVIS_RUST_VERSION
