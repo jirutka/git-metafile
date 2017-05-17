@@ -18,9 +18,8 @@ cargo build --target $TARGET --release
 
 einfo 'Building release tarball...'
 
-pkg_name="$(json_attr name "$(cargo read-manifest)")"
-pkg_version="$(json_attr version "$(cargo read-manifest)")"
-dist_name="$pkg_name-$pkg_version-$TARGET"
+pkg_name="$(crate_name)"
+dist_name="$pkg_name-$(crate_version)-$TARGET"
 dist_dir="target/dist/$dist_name"
 
 rm -Rf ./"$dist_dir".*

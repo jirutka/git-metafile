@@ -11,9 +11,10 @@ einfo() {
 	printf '\n\033[1;36m> %s\033[0m\n' "$@"
 }
 
-json_attr() {
-	local attr="$1"
-	local input="$2"
+crate_name() {
+	cargo metadata --no-deps | sed -En 's/.*"id":"(\S+).*/\1/p'
+}
 
-	python -c "import json; import sys; obj = json.loads('''$input'''); print(obj['$attr'])"
+crate_version() {
+	cargo metadata --no-deps | sed -En 's/.*"id":"\S+ (\S+).*/\1/p'
 }
