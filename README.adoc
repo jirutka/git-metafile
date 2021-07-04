@@ -7,7 +7,7 @@ Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 :gh-branch: master
 
 ifdef::env-github[]
-image:https://travis-ci.org/{gh-name}.svg?branch={gh-branch}["Build Status", link="https://travis-ci.org/{gh-name}"]
+image:https://github.com/{gh-name}/workflows/CI/badge.svg[CI Status, link=https://github.com/{gh-name}/actions?query=workflow%3A%22CI%22]
 endif::env-github[]
 
 A simple tool for storing and restoring files metadata (mode, owner, group) in a git repository.

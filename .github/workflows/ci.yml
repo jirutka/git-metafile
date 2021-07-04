@@ -1,0 +1,56 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+env:
+  CRATE_NAME: git-metafile
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-unknown-linux-musl
+          - x86_64-apple-darwin
+        rust:
+          - stable
+          - beta
+          - nightly
+        include:
+          - target: x86_64-apple-darwin
+            os: macos-latest
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    env:
+      CARGO_BUILD_TARGET: ${{ matrix.target }}
+      CARGO_TERM_VERBOSE: 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Install Rust ${{ matrix.rust }} for ${{ matrix.target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+          toolchain: ${{ matrix.rust }}
+
+      - name: Build binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+
+      - name: Run tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+      - name: Upload binaries to artifacts
+        if: matrix.rust == 'stable'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.target }}
+          path: target/${{ matrix.target }}/debug/${{ env.CRATE_NAME }}
+          if-no-files-found: error

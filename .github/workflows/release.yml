@@ -1,0 +1,90 @@
+name: Release
+on:
+  push:
+    tags:
+      - v[0-9]*
+
+env:
+  CRATE_NAME: git-metafile
+
+jobs:
+  build:
+    name: Build for ${{ matrix.target }}
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-unknown-linux-musl
+          - x86_64-apple-darwin
+        include:
+          - target: x86_64-apple-darwin
+            os: macos-latest
+    runs-on: ${{ matrix.os || 'ubuntu-latest' }}
+    env:
+      CARGO_BUILD_TARGET: ${{ matrix.target }}
+      CARGO_TERM_VERBOSE: 'true'
+      OUTPUT_DIR: target/${{ matrix.target }}/release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Install Rust stable for ${{ matrix.target }}
+        uses: actions-rs/toolchain@v1
+        with:
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+          toolchain: stable
+
+      - name: Resolve crate version and check git tag name
+        run: |
+          crate_version="$(cargo pkgid | cut -d '#' -f2 | grep -o '[^:]*$')"
+          git_tag=${GITHUB_REF#refs/tags/}
+
+          if [ "$git_tag" != "v$crate_version" ]; then
+              printf '::error::%s\n' "Crate version ($crate_version) does not match git tag ($git_tag)"
+              exit 1
+          fi
+          echo "TARBALL_NAME=$CRATE_NAME-$crate_version-${{ matrix.target }}" | tee -a $GITHUB_ENV
+
+      - name: Build release binary
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --locked
+
+      - name: Strip release binary
+        run: |
+          strip $OUTPUT_DIR/$CRATE_NAME
+          ls -la $OUTPUT_DIR/$CRATE_NAME
+
+      - name: Create tarball
+        run: |
+          mkdir -p $TARBALL_NAME/bin
+          install -m 755 $OUTPUT_DIR/$CRATE_NAME $TARBALL_NAME/bin/
+          install -m 644 LICENSE README.adoc $TARBALL_NAME/
+          tar -czf $TARBALL_NAME.tar.gz $TARBALL_NAME
+          shasum -a 256 $TARBALL_NAME.tar.gz > $TARBALL_NAME.tar.gz.sha256
+
+      - name: Upload tarball to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tarballs
+          path: ${{ env.TARBALL_NAME }}.tar.gz*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    name: Publish to GitHub Releases
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download tarballs from artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Upload tarballs to Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: tarballs/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
