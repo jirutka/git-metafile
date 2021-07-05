@@ -33,7 +33,7 @@ tar -xzf {name}-{version}-*.tar.gz
 . Install `{name}` somewhere on your `PATH`, e.g. `/usr/local/bin`:
 +
 [source, sh, subs="verbatim, attributes"]
-cp {name}-{version}-*/{name} /usr/local/bin/
+install -m 755 {name}-{version}-*/{name} /usr/local/bin/
 
 
 .Release tarballs for version {version}
@@ -71,7 +71,7 @@ cd {name}
 . Grab the binary from `target/release/{name}` and install it somewhere on your `PATH`, e.g. `/usr/local/bin`:
 +
 [source, sh, subs="verbatim, attributes"]
-cp target/release/{name} /usr/local/bin
+install -m 755 target/release/{name} /usr/local/bin/
 
 
 == How to use
