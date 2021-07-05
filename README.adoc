@@ -30,10 +30,10 @@ wget https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-
 tar -xzf {name}-{version}-*.tar.gz
 ----
 
-. Install `bin/{name}` somewhere on your `PATH`, e.g. `/usr/local/bin`:
+. Install `{name}` somewhere on your `PATH`, e.g. `/usr/local/bin`:
 +
 [source, sh, subs="verbatim, attributes"]
-cp {name}-{version}-*/bin/{name} /usr/local/bin/
+cp {name}-{version}-*/{name} /usr/local/bin/
 
 
 .Release tarballs for version {version}

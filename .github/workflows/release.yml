@@ -54,15 +54,14 @@ jobs:
           args: --release --locked
 
       - name: Strip release binary
-        run: |
-          strip $OUTPUT_DIR/$CRATE_NAME
-          ls -la $OUTPUT_DIR/$CRATE_NAME
+        run: strip $OUTPUT_DIR/$CRATE_NAME
 
       - name: Create tarball
         run: |
-          mkdir -p $TARBALL_NAME/bin
-          install -m 755 $OUTPUT_DIR/$CRATE_NAME $TARBALL_NAME/bin/
+          mkdir $TARBALL_NAME
+          install -m 755 $OUTPUT_DIR/$CRATE_NAME $TARBALL_NAME/
           install -m 644 LICENSE README.adoc $TARBALL_NAME/
+          ls -la $TARBALL_NAME/
           tar -czf $TARBALL_NAME.tar.gz $TARBALL_NAME
           shasum -a 256 $TARBALL_NAME.tar.gz > $TARBALL_NAME.tar.gz.sha256
 
