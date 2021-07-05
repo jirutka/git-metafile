@@ -9,6 +9,7 @@ use std::result::Result as StdResult;
 
 use boolinator::Boolinator;
 use iter_ext::IteratorExt;
+use nix::unistd::{Uid, Gid};
 
 
 const METAFILE_VERSION: u32 = 1;
@@ -46,8 +47,8 @@ pub struct Metafile {
 pub struct MetafileEntry {
     pub path: PathBuf,
     pub mode: u32,
-    pub uid: u32,
-    pub gid: u32,
+    pub uid: Uid,
+    pub gid: Gid,
 }
 
 
@@ -132,8 +133,8 @@ impl MetafileEntry {
             .map(|meta| MetafileEntry {
                 path: path.into(),
                 mode: meta.mode(),
-                uid: meta.uid(),
-                gid: meta.gid(),
+                uid: Uid::from_raw(meta.uid()),
+                gid: Gid::from_raw(meta.gid()),
             })
     }
 
@@ -148,8 +149,8 @@ impl MetafileEntry {
         Ok(MetafileEntry {
             path: fields[0].into(),
             mode: u32::from_str_radix(fields[1], 8)?,
-            uid: fields[2].parse()?,
-            gid: fields[3].parse()?,
+            uid: Uid::from_raw(fields[2].parse()?),
+            gid: Gid::from_raw(fields[3].parse()?),
         })
     }
 
