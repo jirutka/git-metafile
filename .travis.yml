@@ -13,13 +13,10 @@ env:
   matrix:
     - TARGET_CPU=x86_64 TARGET_OS=host
     - TARGET_CPU=x86_64 TARGET_OS=musl  # only for linux
-    - TARGET_CPU=i686 TARGET_OS=musl  # only for linux
 matrix:
   exclude:
     - os: osx
       env: TARGET_CPU=x86_64 TARGET_OS=musl
-    - os: osx
-      env: TARGET_CPU=i686 TARGET_OS=musl
 
 before_install:
   - export PATH="$PATH:$HOME/.cargo/bin"

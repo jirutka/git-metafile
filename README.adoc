@@ -37,19 +37,16 @@ cp {name}-{version}-*/bin/{name} /usr/local/bin/
 
 
 .Release tarballs for version {version}
-[cols="3", width="100%"]
+[cols="2", width="100%"]
 |===
 | Linux (static binary)
 | https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz[x86_64] (64 bit)
-| https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-i686-unknown-linux-musl.tar.gz[i686] (32 bit)
 
 | Linux (glibc)
 | https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-unknown-linux-gnu.tar.gz[x86_64] (64 bit)
-| —
 
 | OS X
 | https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-apple-darwin.tar.gz[x86_64] (64 bit)
-| —
 |===
 
 Note: Static binaries (statically linked with http://www.musl-libc.org/[musl libc]) don’t have dynamic dependencies and so should work on any Linux system.
