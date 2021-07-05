@@ -19,4 +19,7 @@ quick-error = "^2.0"
 nix = "^0.21.0"
 
 [profile.release]
+codegen-units = 1
 lto = true
+opt-level = "z"
+panic = "abort"
