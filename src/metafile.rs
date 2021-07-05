@@ -23,16 +23,14 @@ quick_error! {
     pub enum MetafileError {
         Io(err: IoError) {
             from()
-            cause(err)
-            description(err.description())
+            source(err)
+            display("{}", err)
         }
         Malformed(msg: String) {
             from(err: ParseIntError) -> (format!("{}", err))
-            description("malformed metafile")
             display("malformed metafile: {}", msg)
         }
         UnsupportedVersion(version: u32) {
-            description("unsupported metafile version")
             display("unsupported metafile version \"{}\"", version)
         }
     }
