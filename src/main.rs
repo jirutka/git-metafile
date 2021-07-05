@@ -14,7 +14,7 @@ use std::iter::{IntoIterator, Iterator};
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 use std::str;
-use std::sync::atomic::{AtomicBool, Ordering, ATOMIC_BOOL_INIT};
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use argparse::{ArgumentParser, Parse, Print, Store, StoreTrue};
 use nix::unistd;
@@ -26,7 +26,7 @@ const PRG_VERSION: &'static str =
     concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
 const DEFAULT_FILE_NAME: &'static str = ".metafile";
 
-static QUIET_ENABLED: AtomicBool = ATOMIC_BOOL_INIT;
+static QUIET_ENABLED: AtomicBool = AtomicBool::new(false);
 
 
 // TODO refactor and improve error handling
