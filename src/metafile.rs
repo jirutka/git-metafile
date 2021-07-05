@@ -74,7 +74,7 @@ impl Metafile {
 
         let version = lines.next()
             .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s) )
-            .and_then(|s| s.trim_left_matches(METAFILE_HEADER).trim()
+            .and_then(|s| s.trim_start_matches(METAFILE_HEADER).trim()
                            .parse::<u32>().ok())
             .ok_or_else(|| MetafileError::Malformed("missing or malformed header".into()))?;
 
