@@ -107,7 +107,7 @@ impl Metafile {
             .and_then(|mut buf| self.dump(&mut buf))
     }
 
-    pub fn dump(self, dest: &mut Write) -> Result<()> {
+    pub fn dump(self, dest: &mut dyn Write) -> Result<()> {
 
         write!(dest, "{} {}\n# <path>\t<mode>\t<uid>\t<gid>\n",
                METAFILE_HEADER, METAFILE_VERSION)?;
@@ -153,7 +153,7 @@ impl MetafileEntry {
         })
     }
 
-    pub fn dump(&self, dest: &mut Write) -> Result<()> {
+    pub fn dump(&self, dest: &mut dyn Write) -> Result<()> {
         writeln!(dest, "{}", self.to_string())
             .map_err(MetafileError::from)
     }
