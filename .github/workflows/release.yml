@@ -13,20 +13,29 @@ jobs:
     strategy:
       matrix:
         target:
-          - x86_64-unknown-linux-gnu
           - x86_64-unknown-linux-musl
+          - x86_64-unknown-linux-gnu
           - x86_64-apple-darwin
+          - aarch64-unknown-linux-musl
+          - armv7-unknown-linux-musleabihf
+          - powerpc64le-unknown-linux-gnu
+          - riscv64gc-unknown-linux-gnu
         include:
           - target: x86_64-apple-darwin
             os: macos-latest
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     env:
-      CARGO_BUILD_TARGET: ${{ matrix.target }}
-      CARGO_TERM_VERBOSE: 'true'
       OUTPUT_DIR: target/${{ matrix.target }}/release
+      STRIP: strip
     steps:
       - name: Checkout repository
         uses: actions/checkout@v1
+
+      - name: Install llvm and set STRIP=llvm-strip
+        if: ${{ runner.os == 'Linux' }}
+        run: |
+          sudo apt-get install llvm
+          echo 'STRIP=llvm-strip' >> $GITHUB_ENV
 
       - name: Install Rust stable for ${{ matrix.target }}
         uses: actions-rs/toolchain@v1
@@ -50,11 +59,12 @@ jobs:
       - name: Build release binary
         uses: actions-rs/cargo@v1
         with:
+          use-cross: ${{ !startsWith(matrix.target, 'x86_64') }}
           command: build
-          args: --release --locked
+          args: --locked --release --target ${{ matrix.target }} --verbose
 
       - name: Strip release binary
-        run: strip $OUTPUT_DIR/$CRATE_NAME
+        run: $STRIP $OUTPUT_DIR/$CRATE_NAME
 
       - name: Create tarball
         run: |

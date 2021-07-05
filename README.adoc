@@ -5,6 +5,7 @@ Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 :version: 0.2.0
 :gh-name: jirutka/{name}
 :gh-branch: master
+:releases-uri: https://github.com/{gh-name}/releases/download/v{version}
 
 ifdef::env-github[]
 image:https://github.com/{gh-name}/workflows/CI/badge.svg[CI Status, link=https://github.com/{gh-name}/actions?query=workflow%3A%22CI%22]
@@ -22,11 +23,11 @@ TODO
 
 . Install git (use your system’s package manager).
 
-. Download and extract {name} tarball for your OS and platform (pick the right link from the table below):
+. Download and extract release tarball for your OS and CPU architecture (pick the right link from the table below):
 +
 [source, sh, subs="verbatim, attributes"]
 ----
-wget https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz
+wget {releases-uri}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz
 tar -xzf {name}-{version}-*.tar.gz
 ----
 
@@ -36,20 +37,43 @@ tar -xzf {name}-{version}-*.tar.gz
 install -m 755 {name}-{version}-*/{name} /usr/local/bin/
 
 
-.Release tarballs for version {version}
-[cols="2", width="100%"]
+==== Release tarballs for the latest version
+
+[cols="10,30,10,50", width="100%"]
 |===
-| Linux (static binary)
-| https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz[x86_64] (64 bit)
+| OS | Architecture | libc | File
 
-| Linux (glibc)
-| https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-unknown-linux-gnu.tar.gz[x86_64] (64 bit)
+.6+| Linux
+.2+| x86_64
+| musl*
+| {releases-uri}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz[{name}-{version}-x86_64-unknown-linux-musl.tar.gz]
 
-| OS X
-| https://github.com/{gh-name}/releases/download/v{version}/{name}-{version}-x86_64-apple-darwin.tar.gz[x86_64] (64 bit)
+| glibc
+| {releases-uri}/{name}-{version}-x86_64-unknown-linux-gnu.tar.gz[{name}-{version}-x86_64-unknown-linux-gnu.tar.gz]
+
+| aarch64 (ARM 64bit)
+| musl*
+| {releases-uri}/{name}-{version}-aarch64-unknown-linux-musl.tar.gz[{name}-{version}-aarch64-unknown-linux-musl.tar.gz]
+
+| armv7 (ARM 32bit)
+| musl*
+| {releases-uri}/{name}-{version}-armv7-unknown-linux-musleabihf.tar.gz[{name}-{version}-armv7-unknown-linux-musleabihf.tar.gz]
+
+| ppc64le (PowerPC LE)
+| glibc
+| {releases-uri}/{name}-{version}-powerpc64le-unknown-linux-gnu.tar.gz[{name}-{version}-powerpc64le-unknown-linux-gnu.tar.gz]
+
+| riscv64gc (RISC-V)
+| glibc
+| {releases-uri}/{name}-{version}-riscv64gc-unknown-linux-gnu.tar.gz[{name}-{version}-riscv64gc-unknown-linux-gnu.tar.gz]
+
+| macOS
+| x86_64 (Intel 64bit)
+|
+| {releases-uri}/{name}-{version}-x86_64-apple-darwin.tar.gz[{name}-{version}-x86_64-apple-darwin.tar.gz]
 |===
 
-Note: Static binaries (statically linked with http://www.musl-libc.org/[musl libc]) don’t have dynamic dependencies and so should work on any Linux system.
+_* musl binaries are statically linked with http://www.musl-libc.org/[musl libc], so they work on every Linux system (distro) regardless of used libc._
 
 
 === From sources
