@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 use std::ffi::OsStr;
 use std::io::{Error, ErrorKind, Result};
+use std::iter::FromIterator;
 use std::os::unix::ffi::OsStrExt;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -26,14 +27,28 @@ pub fn repo_root() -> Result<PathBuf> {
 }
 
 pub fn staged_files() -> Result<BTreeSet<PathBuf>> {
-    ls_files(&[""; 0])
+    let deleted_files = BTreeSet::from_iter(ls_files(&["--deleted"])?);
+    let mut paths = BTreeSet::new();
+
+    for mut path in ls_files(&[""; 0])? {
+        // Skip files that have been deleted from FS.
+        if deleted_files.contains(&path) {
+            continue;
+        }
+        // Insert also all intermediate directories.
+        loop {
+            paths.insert(path.clone());
+            if !path.pop() {
+                break;
+            }
+        }
+    }
+    paths.remove(Path::new(""));
+
+    Ok(paths)
 }
 
-//pub fn unstaged_files() -> Result<BTreeSet<PathBuf>> {
-//    ls_files(&["--others", "--exclude-standard"])
-//}
-
-fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<BTreeSet<PathBuf>> {
+fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<Vec<PathBuf>> {
     let output = Command::new("git")
         .args(&["ls-files", "--full-name", "-z"])
         .args(args)
@@ -43,17 +58,8 @@ fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<BTreeSet<PathBuf>> {
     let files = output.stdout
         .split(|b| *b == 0)
         .map(OsStr::from_bytes)
-        .map(PathBuf::from);
+        .map(PathBuf::from)
+        .collect::<Vec<PathBuf>>();
 
-    let mut paths = BTreeSet::new();
-    for mut path in files {
-        // Insert also all intermediate directories.
-        loop {
-            paths.insert(path.clone());
-            if !path.pop() { break; }
-        }
-    }
-    paths.remove(Path::new(""));
-
-    Ok(paths)
+    Ok(files)
 }
