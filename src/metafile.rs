@@ -72,13 +72,11 @@ impl Metafile {
             // Result<(usize, T), (usize, E)> -> Ok((usize, T))
             .filter_map(StdResult::ok);  // XXX: report encoding errors?
 
-        let version = try! {
-            lines.next()
-                .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s) )
-                .and_then(|s| s.trim_left_matches(METAFILE_HEADER).trim()
-                               .parse::<u32>().ok())
-                .ok_or_else(|| MetafileError::Malformed("missing or malformed header".into()))
-        };
+        let version = lines.next()
+            .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s) )
+            .and_then(|s| s.trim_left_matches(METAFILE_HEADER).trim()
+                           .parse::<u32>().ok())
+            .ok_or_else(|| MetafileError::Malformed("missing or malformed header".into()))?;
 
         if version != 1 {
             return Err(MetafileError::UnsupportedVersion(version))
@@ -93,8 +91,8 @@ impl Metafile {
             .inspect_err(|&(i, ref e)| err!("{} at line {}", &e, i + 1));
 
         let entries = if strict {
-            try! { entries.map(|r| r.map_err(|(_, e)| e))
-                          .collect::<Result<_>>() }
+            entries.map(|r| r.map_err(|(_, e)| e))
+                   .collect::<Result<_>>()?
         } else {
             entries.filter_map(StdResult::ok).collect::<Vec<_>>()
         };
@@ -111,14 +109,14 @@ impl Metafile {
 
     pub fn dump(self, dest: &mut Write) -> Result<()> {
 
-        try! { write!(dest, "{} {}\n# <path>\t<mode>\t<uid>\t<gid>\n",
-                      METAFILE_HEADER, METAFILE_VERSION) }
+        write!(dest, "{} {}\n# <path>\t<mode>\t<uid>\t<gid>\n",
+               METAFILE_HEADER, METAFILE_VERSION)?;
 
         for entry in self.entries {
-            try! { entry.dump(dest) }
+            entry.dump(dest)?;
         }
-        try! { dest.write_all(b"# vim: set ts=16") }
-        try! { dest.flush() }
+        dest.write_all(b"# vim: set ts=16")?;
+        dest.flush()?;
 
         Ok(())
     }
@@ -149,9 +147,9 @@ impl MetafileEntry {
 
         Ok(MetafileEntry {
             path: fields[0].into(),
-            mode: try!(u32::from_str_radix(fields[1], 8)),
-            uid: try!(fields[2].parse()),
-            gid: try!(fields[3].parse()),
+            mode: u32::from_str_radix(fields[1], 8)?,
+            uid: fields[2].parse()?,
+            gid: fields[3].parse()?,
         })
     }
 

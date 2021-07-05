@@ -8,17 +8,14 @@ use std::str;
 
 
 pub fn repo_root() -> Result<PathBuf> {
-    let output = try! {
-        Command::new("git")
-            .args(&["rev-parse", "--show-toplevel"])
-            .output()
-    };
-    let path = try! {
-        str::from_utf8(&output.stdout)
-            .map_err(|e| Error::new(ErrorKind::InvalidData, e))
-            .map(str::trim)
-            .map(PathBuf::from)
-    };
+    let output = Command::new("git")
+        .args(&["rev-parse", "--show-toplevel"])
+        .output()?;
+
+    let path = str::from_utf8(&output.stdout)
+        .map_err(|e| Error::new(ErrorKind::InvalidData, e))
+        .map(str::trim)
+        .map(PathBuf::from)?;
 
     if path.is_dir() {
         Ok(path)
@@ -37,13 +34,12 @@ pub fn staged_files() -> Result<BTreeSet<PathBuf>> {
 //}
 
 fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<BTreeSet<PathBuf>> {
-    let output = try! {
-        Command::new("git")
-            .args(&["ls-files", "--full-name", "-z"])
-            .args(args)
-            .env("LC_ALL", "C")
-            .output()
-    };
+    let output = Command::new("git")
+        .args(&["ls-files", "--full-name", "-z"])
+        .args(args)
+        .env("LC_ALL", "C")
+        .output()?;
+
     let files = output.stdout
         .split(|b| *b == 0)
         .map(OsStr::from_bytes)
