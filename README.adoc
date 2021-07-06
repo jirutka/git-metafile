@@ -14,7 +14,7 @@ endif::env-github[]
 A simple tool for storing and restoring files metadata (mode, owner, group) in a git repository.
 It's designed especially for versioning /etc.
 
-TODO
+// TODO: Add more information.
 
 
 == Installation
