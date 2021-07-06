@@ -76,6 +76,14 @@ install -m 755 {name}-{version}-*/{name} /usr/local/bin/
 _* musl binaries are statically linked with http://www.musl-libc.org/[musl libc], so they work on every Linux system (distro) regardless of used libc._
 
 
+=== On Alpine Linux
+
+Install package {name} from the Alpine’s community repository:
+
+[source, sh, subs="attributes"]
+apk add {name}
+
+
 === From sources
 
 . Install git (use your system’s package manager).
