@@ -85,6 +85,16 @@ Install package {name} from the Alpine’s community repository:
 apk add {name}
 
 
+=== On Arch Linux
+
+Install package https://aur.archlinux.org/packages/{name}[{name}] from AUR:
+
+[source, sh, subs="+attributes"]
+yay -S {name}
+
+Or use another AUR helper.
+
+
 === Using cargo
 
 Build and install {name} from https://crates.io/[crates.io] using cargo:
