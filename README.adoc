@@ -19,7 +19,7 @@ It's designed especially for versioning /etc.
 
 == Installation
 
-=== Using pre-built binaries
+=== Using pre-built binary
 
 . Install git (use your system’s package manager).
 
@@ -83,6 +83,17 @@ Install package {name} from the Alpine’s community repository:
 
 [source, sh, subs="attributes"]
 apk add {name}
+
+
+=== Using cargo
+
+Build and install {name} from https://crates.io/[crates.io] using cargo:
+
+[source, sh, subs="+attributes"]
+cargo install {name}
+
+Note that the binary may be bigger than expected because it contains debug symbols.
+To remove debug symbols and therefore reduce the file size, run `strip` on the binary.
 
 
 === From source tarball
