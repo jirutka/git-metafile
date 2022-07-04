@@ -9,9 +9,9 @@ in a git repository. It's designed especially for versioning /etc.
 """
 homepage = "https://github.com/jirutka/git-metafile"
 repository = "https://github.com/jirutka/git-metafile"
-readme = "README.adoc"
-keywords = ["git", "cli", "tool"]
 license = "MIT"
+keywords = ["git", "cli", "tool"]
+exclude = [".*", "README.adoc"]
 
 [dependencies]
 argparse = "^0.2.0"

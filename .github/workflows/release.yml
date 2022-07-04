@@ -119,6 +119,15 @@ jobs:
           profile: minimal
           toolchain: stable
 
+      - name: Install asciidoctor and pandoc
+        run: sudo apt-get install asciidoctor pandoc
+
+      - name: Convert README to Markdown
+        run: |
+          printf '# Git Metafile\n\n' > README.md
+          asciidoctor -b docbook -o - README.adoc \
+              | pandoc -f docbook -t gfm --wrap=preserve --base-header-level=1 >> README.md
+
       - name: Publish to crates.io
         uses: actions-rs/cargo@v1
         with:
