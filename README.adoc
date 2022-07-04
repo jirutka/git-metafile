@@ -19,7 +19,38 @@ It's designed especially for versioning /etc.
 
 == Installation
 
+=== On Alpine Linux
+
+If you’re using *Alpine Linux*, you can install https://pkgs.alpinelinux.org/packages?name={name}[{name}] package from the Alpine’s community repository:
+
+[source, sh, subs="+attributes"]
+apk add {name}
+
+
+=== On Arch Linux
+
+If you’re using *Arch Linux*, you can install https://aur.archlinux.org/packages/{name}[{name}] package from https://aur.archlinux.org/[AUR]:
+
+[source, sh, subs="+attributes"]
+yay -S {name}
+
+Or use another AUR helper.
+
+
+=== Using cargo
+
+If you’re a *Rust developer*, you can build and install https://crates.io/crates/{name}[{name}] from https://crates.io/[crates.io] using `cargo`:
+
+[source, sh, subs="+attributes"]
+cargo install {name}
+
+Note that the binary may be bigger than expected because it contains debug symbols.
+To remove debug symbols and therefore reduce the file size, run `strip` on the binary.
+
+
 === Using pre-built binary
+
+If your package manager doesn’t provide {name}, you can use a pre-built binary.
 
 . Install git (use your system’s package manager).
 
@@ -75,35 +106,6 @@ install -m 755 {name}-{version}-*/{name} /usr/local/bin/
 |===
 
 _* musl binaries are statically linked with http://www.musl-libc.org/[musl libc], so they work on every Linux system (distro) regardless of used libc._
-
-
-=== On Alpine Linux
-
-Install package https://pkgs.alpinelinux.org/packages?name={name}[{name}] from the Alpine’s community repository:
-
-[source, sh, subs="+attributes"]
-apk add {name}
-
-
-=== On Arch Linux
-
-Install package https://aur.archlinux.org/packages/{name}[{name}] from AUR:
-
-[source, sh, subs="+attributes"]
-yay -S {name}
-
-Or use another AUR helper.
-
-
-=== Using cargo
-
-Build and install {name} from https://crates.io/[crates.io] using cargo:
-
-[source, sh, subs="+attributes"]
-cargo install {name}
-
-Note that the binary may be bigger than expected because it contains debug symbols.
-To remove debug symbols and therefore reduce the file size, run `strip` on the binary.
 
 
 === From source tarball
