@@ -29,7 +29,7 @@ jobs:
       STRIP: strip
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Install llvm and set STRIP=llvm-strip
         if: ${{ runner.os == 'Linux' }}
@@ -76,7 +76,7 @@ jobs:
           shasum -a 256 $TARBALL_NAME.tar.gz > $TARBALL_NAME.tar.gz.sha256
 
       - name: Upload tarball to artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tarballs
           path: ${{ env.TARBALL_NAME }}.tar.gz*
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download tarballs from artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
 
       - name: Upload tarballs to Releases
         uses: softprops/action-gh-release@v1

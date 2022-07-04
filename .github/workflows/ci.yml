@@ -27,7 +27,7 @@ jobs:
       CARGO_TERM_VERBOSE: 'true'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Install Rust ${{ matrix.rust }} for ${{ matrix.target }}
         uses: actions-rs/toolchain@v1
@@ -49,7 +49,7 @@ jobs:
 
       - name: Upload binaries to artifacts
         if: matrix.rust == 'stable'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.target }}
           path: target/${{ matrix.target }}/debug/${{ env.CRATE_NAME }}
