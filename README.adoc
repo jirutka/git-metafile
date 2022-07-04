@@ -85,26 +85,28 @@ Install package {name} from the Alpine’s community repository:
 apk add {name}
 
 
-=== From sources
+=== From source tarball
 
 . Install git (use your system’s package manager).
 
-. Clone this repository and jump in:
+. Download and unpack the tarball:
 +
-[source, sh, subs="verbatim, attributes"]
+[source, sh, subs="+attributes"]
 ----
-git clone https://github.com/{gh-name}.git
-cd {name}
+wget https://github.com/{gh-name}/archive/v{version}/{name}-{version}.tar.gz
+tar -xzf {name}-{version}.tar.gz
+cd {name}-{version}
 ----
 
-. Build the package using cargo:
+. Build {name} using cargo:
 +
-    cargo build --release
+[source, sh]
+cargo build --release --locked
 
 . Grab the binary from `target/release/{name}` and install it somewhere on your `PATH`, e.g. `/usr/local/bin`:
 +
-[source, sh, subs="verbatim, attributes"]
-install -m 755 target/release/{name} /usr/local/bin/
+[source, sh, subs="+attributes"]
+install -D -m755 target/release/{name} -t /usr/local/bin/
 
 
 == How to use
