@@ -24,7 +24,7 @@ pub trait IteratorExt : Iterator {
     fn inspect_err<T, E, F>(self, f: F) -> InspectErr<Self, F> where
         Self: Iterator<Item=Result<T, E>> + Sized, F: FnMut(&E)
     {
-        InspectErr { iter: self, f: f }
+        InspectErr { iter: self, f }
     }
 }
 

@@ -13,7 +13,7 @@ use nix::unistd::{Uid, Gid};
 
 
 const METAFILE_VERSION: u32 = 1;
-const METAFILE_HEADER: &'static str = "#%GIT-METAFILE";
+const METAFILE_HEADER: &str = "#%GIT-METAFILE";
 
 pub type Result<T> = StdResult<T, MetafileError>;
 
@@ -53,7 +53,7 @@ pub struct MetafileEntry {
 impl Metafile {
 
     pub fn new(entries: Vec<MetafileEntry>) -> Metafile {
-        Metafile { entries: entries }
+        Metafile { entries }
     }
 
     pub fn read<P: AsRef<Path>>(path: P, strict: bool) -> Result<Metafile> {
@@ -96,7 +96,7 @@ impl Metafile {
             entries.filter_map(StdResult::ok).collect::<Vec<_>>()
         };
 
-        Ok(Metafile { entries: entries })
+        Ok(Metafile { entries })
     }
 
     pub fn write<P: AsRef<Path>>(self, path: P) -> Result<()> {
@@ -153,7 +153,7 @@ impl MetafileEntry {
     }
 
     pub fn dump(&self, dest: &mut dyn Write) -> Result<()> {
-        writeln!(dest, "{}", self.to_string())
+        writeln!(dest, "{}", self)
             .map_err(MetafileError::from)
     }
 }

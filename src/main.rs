@@ -22,9 +22,9 @@ use nix::unistd;
 use metafile::{Metafile, MetafileEntry};
 
 
-const PRG_VERSION: &'static str =
+const PRG_VERSION: &str =
     concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
-const DEFAULT_FILE_NAME: &'static str = ".metafile";
+const DEFAULT_FILE_NAME: &str = ".metafile";
 
 static QUIET_ENABLED: AtomicBool = AtomicBool::new(false);
 
