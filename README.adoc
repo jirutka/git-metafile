@@ -58,7 +58,7 @@ If your package manager doesn’t provide {name}, you can use a pre-built binary
 +
 [source, sh, subs="verbatim, attributes"]
 ----
-curl -sSLO {releases-uri}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz
+curl -sSLO {releases-uri}/{name}-{version}-x86_64-linux-musl.tar.gz
 curl -sSL {releases-uri}/checksums.txt | sha256sum -c --ignore-missing
 tar -xzf {name}-{version}-*.tar.gz
 ----
@@ -78,26 +78,26 @@ install -m 755 {name}-{version}-*/{name} /usr/local/bin/
 .6+| Linux
 .2+| x86_64
 | musl*
-| {releases-uri}/{name}-{version}-x86_64-unknown-linux-musl.tar.gz[{name}-{version}-x86_64-unknown-linux-musl.tar.gz]
+| {releases-uri}/{name}-{version}-x86_64-linux.tar.gz[{name}-{version}-x86_64-linux.tar.gz]
 
 | glibc
-| {releases-uri}/{name}-{version}-x86_64-unknown-linux-gnu.tar.gz[{name}-{version}-x86_64-unknown-linux-gnu.tar.gz]
+| {releases-uri}/{name}-{version}-x86_64-linux-gnu.tar.gz[{name}-{version}-x86_64-linux-gnu.tar.gz]
 
 | aarch64 (ARM 64bit)
 | musl*
-| {releases-uri}/{name}-{version}-aarch64-unknown-linux-musl.tar.gz[{name}-{version}-aarch64-unknown-linux-musl.tar.gz]
+| {releases-uri}/{name}-{version}-aarch64-linux.tar.gz[{name}-{version}-aarch64-linux.tar.gz]
 
-| armv7 (ARM 32bit)
+| armv7 (ARM 32bit hard-float)
 | musl*
-| {releases-uri}/{name}-{version}-armv7-unknown-linux-musleabihf.tar.gz[{name}-{version}-armv7-unknown-linux-musleabihf.tar.gz]
+| {releases-uri}/{name}-{version}-armv7-linux.tar.gz[{name}-{version}-armv7-linux.tar.gz]
 
 | ppc64le (PowerPC LE)
 | glibc
-| {releases-uri}/{name}-{version}-powerpc64le-unknown-linux-gnu.tar.gz[{name}-{version}-powerpc64le-unknown-linux-gnu.tar.gz]
+| {releases-uri}/{name}-{version}-powerpc64le-linux-gnu.tar.gz[{name}-{version}-powerpc64le-linux-gnu.tar.gz]
 
 | riscv64gc (RISC-V)
 | glibc
-| {releases-uri}/{name}-{version}-riscv64gc-unknown-linux-gnu.tar.gz[{name}-{version}-riscv64gc-unknown-linux-gnu.tar.gz]
+| {releases-uri}/{name}-{version}-riscv64gc-linux-gnu.tar.gz[{name}-{version}-riscv64gc-linux-gnu.tar.gz]
 
 | macOS
 | x86_64 (Intel 64bit)

@@ -54,7 +54,10 @@ jobs:
               printf '::error::%s\n' "Crate version ($crate_version) does not match git tag ($git_tag)"
               exit 1
           fi
-          echo "TARBALL_NAME=$CRATE_NAME-$crate_version-${{ matrix.target }}" | tee -a $GITHUB_ENV
+          target=${{ matrix.target }}
+          target=${target/-unknown/}
+          target=${target%-musl*}
+          echo "TARBALL_NAME=$CRATE_NAME-$crate_version-$target" | tee -a $GITHUB_ENV
 
       - name: Build release binary
         uses: actions-rs/cargo@v1
