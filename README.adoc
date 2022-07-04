@@ -2,7 +2,7 @@
 Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 //custom
 :name: git-metafile
-:version: 0.2.2
+:version: 0.2.3
 :gh-name: jirutka/{name}
 :gh-branch: master
 :releases-uri: https://github.com/{gh-name}/releases/download/v{version}
