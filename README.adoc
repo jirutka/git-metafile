@@ -64,13 +64,28 @@ To remove debug symbols and therefore reduce the file size, run `strip` on the b
 
 If your package manager doesn’t provide {name}, you can use a pre-built binary.
 
+On Linux, you can choose either a statically linked footnote:[Statically linked with http://www.musl-libc.org/[musl libc]] *(static)* binary that should work on every Linux system (distro), or, if you’re using a sufficient recent GNU/libc-based *(glibc)* distro (most major distros), a dynamically linked binary.
+
+____
+🐧 *Linux (static)*:
+{releases-uri}/{name}-{version}-x86_64-linux.tar.gz[[x86_64\]]
+{releases-uri}/{name}-{version}-aarch64-linux.tar.gz[[aarch64\]]
+{releases-uri}/{name}-{version}-armv7-linux.tar.gz[[armv7\]] +
+🐧 *Linux (glibc)*:{nbsp}
+{releases-uri}/{name}-{version}-x86_64-linux-gnu.tar.gz[[x86_64\]]
+{releases-uri}/{name}-{version}-powerpc64le-linux-gnu.tar.gz[[ppc64le\]]
+{releases-uri}/{name}-{version}-riscv64gc-linux-gnu.tar.gz[[riscv64gc\]] +
+ *macOS*:
+{releases-uri}/{name}-{version}-x86_64-apple-darwin.tar.gz[[x86_64\]]
+____
+
 . Install git (use your system’s package manager).
 
-. Download and extract release tarball for your OS and CPU architecture (pick the right link from the table below):
+. Download and extract release tarball for your OS and CPU architecture (pick the right link from the list above):
 +
 [source, sh, subs="verbatim, attributes"]
 ----
-curl -sSLO {releases-uri}/{name}-{version}-x86_64-linux-musl.tar.gz
+curl -sSLO {releases-uri}/{name}-{version}-x86_64-linux.tar.gz
 curl -sSL {releases-uri}/checksums.txt | sha256sum -c --ignore-missing
 tar -xzf {name}-{version}-*.tar.gz
 ----
@@ -79,45 +94,6 @@ tar -xzf {name}-{version}-*.tar.gz
 +
 [source, sh, subs="verbatim, attributes"]
 install -m 755 {name}-{version}-*/{name} /usr/local/bin/
-
-
-==== Release tarballs for the latest version
-
-[cols="10,30,10,50", width="100%"]
-|===
-| OS | Architecture | libc | File
-
-.6+| Linux
-.2+| x86_64
-| _static*_
-| {releases-uri}/{name}-{version}-x86_64-linux.tar.gz[{name}-{version}-x86_64-linux.tar.gz]
-
-| glibc
-| {releases-uri}/{name}-{version}-x86_64-linux-gnu.tar.gz[{name}-{version}-x86_64-linux-gnu.tar.gz]
-
-| aarch64 (ARM 64bit)
-| _static*_
-| {releases-uri}/{name}-{version}-aarch64-linux.tar.gz[{name}-{version}-aarch64-linux.tar.gz]
-
-| armv7 (ARM 32bit hard-float)
-| _static*_
-| {releases-uri}/{name}-{version}-armv7-linux.tar.gz[{name}-{version}-armv7-linux.tar.gz]
-
-| ppc64le (PowerPC LE)
-| glibc
-| {releases-uri}/{name}-{version}-powerpc64le-linux-gnu.tar.gz[{name}-{version}-powerpc64le-linux-gnu.tar.gz]
-
-| riscv64gc (RISC-V)
-| glibc
-| {releases-uri}/{name}-{version}-riscv64gc-linux-gnu.tar.gz[{name}-{version}-riscv64gc-linux-gnu.tar.gz]
-
-| macOS
-| x86_64 (Intel 64bit)
-|
-| {releases-uri}/{name}-{version}-x86_64-apple-darwin.tar.gz[{name}-{version}-x86_64-apple-darwin.tar.gz]
-|===
-
-_* static binaries are statically linked with http://www.musl-libc.org/[musl libc], so they work on every Linux system (distro) regardless of used libc._
 
 
 === From source tarball
