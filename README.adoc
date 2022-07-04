@@ -9,6 +9,8 @@ Jakub Jirutka <https://github.com/jirutka[@jirutka]>
 
 ifdef::env-github[]
 image:https://github.com/{gh-name}/workflows/CI/badge.svg[CI Status, link=https://github.com/{gh-name}/actions?query=workflow%3A%22CI%22]
+image:https://img.shields.io/crates/v/{name}.svg[Version on crates.io, link=https://crates.io/crates/{name}]
+image:https://repology.org/badge/tiny-repos/{name}.svg[Packaging status, link=https://repology.org/project/{name}]
 endif::env-github[]
 
 A simple tool for storing and restoring complete files metadata (mode, owner, group) in a git repository.
