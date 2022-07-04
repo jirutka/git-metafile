@@ -79,9 +79,9 @@ _* musl binaries are statically linked with http://www.musl-libc.org/[musl libc]
 
 === On Alpine Linux
 
-Install package {name} from the Alpine’s community repository:
+Install package https://pkgs.alpinelinux.org/packages?name={name}[{name}] from the Alpine’s community repository:
 
-[source, sh, subs="attributes"]
+[source, sh, subs="+attributes"]
 apk add {name}
 
 
