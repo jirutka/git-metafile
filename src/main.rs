@@ -1,8 +1,3 @@
-extern crate argparse;
-extern crate boolinator;
-#[macro_use] extern crate quick_error;
-extern crate nix;
-
 mod git;
 mod iter_ext;
 #[macro_use] mod macros;

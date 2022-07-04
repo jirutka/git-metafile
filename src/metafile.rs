@@ -8,8 +8,10 @@ use std::path::{Path, PathBuf};
 use std::result::Result as StdResult;
 
 use boolinator::Boolinator;
-use iter_ext::IteratorExt;
+use quick_error::quick_error;
 use nix::unistd::{Uid, Gid};
+
+use crate::iter_ext::IteratorExt;
 
 
 const METAFILE_VERSION: u32 = 1;

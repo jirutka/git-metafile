@@ -2,6 +2,7 @@
 name = "git-metafile"
 version = "0.2.1"
 authors = ["Jakub Jirutka <jakub@jirutka.cz>"]
+edition = "2021"
 description = """
 A simple tool for storing and restoring files metadata (mode, owner, group) \
 in a git repository. It's designed especially for versioning /etc.
