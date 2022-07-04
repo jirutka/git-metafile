@@ -21,8 +21,10 @@ pub fn repo_root() -> Result<PathBuf> {
     if path.is_dir() {
         Ok(path)
     } else {
-        Err(Error::new(ErrorKind::InvalidData,
-            format!("directory {:?} does not exist", path)))
+        Err(Error::new(
+            ErrorKind::InvalidData,
+            format!("directory {:?} does not exist", path),
+        ))
     }
 }
 
@@ -55,7 +57,8 @@ fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<Vec<PathBuf>> {
         .env("LC_ALL", "C")
         .output()?;
 
-    let files = output.stdout
+    let files = output
+        .stdout
         .split(|b| *b == 0)
         .map(OsStr::from_bytes)
         .map(PathBuf::from)

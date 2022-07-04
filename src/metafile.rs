@@ -8,8 +8,8 @@ use std::path::{Path, PathBuf};
 use std::result::Result as StdResult;
 
 use boolinator::Boolinator;
+use nix::unistd::{Gid, Uid};
 use quick_error::quick_error;
-use nix::unistd::{Uid, Gid};
 
 use crate::iter_ext::IteratorExt;
 
@@ -73,27 +73,32 @@ impl Metafile {
             // Result<(usize, T), (usize, E)> -> Ok((usize, T))
             .filter_map(StdResult::ok);  // XXX: report encoding errors?
 
-        let version = lines.next()
-            .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s) )
-            .and_then(|s| s.trim_start_matches(METAFILE_HEADER).trim()
-                           .parse::<u32>().ok())
+        let version = lines
+            .next()
+            .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s))
+            .and_then(|s| {
+                s.trim_start_matches(METAFILE_HEADER)
+                    .trim()
+                    .parse::<u32>()
+                    .ok()
+            })
             .ok_or_else(|| MetafileError::Malformed("missing or malformed header".into()))?;
 
         if version != 1 {
-            return Err(MetafileError::UnsupportedVersion(version))
+            return Err(MetafileError::UnsupportedVersion(version));
         }
 
         let entries = lines
             .filter(|&(_, ref s)| !s.is_empty() && !s.starts_with('#'))
             // (usize, &str) -> Result<Metafile, (usize, MetafileError)>
-            .map(|(i, s)| MetafileEntry::parse(s)
-                                        .map_err(|e| (i, e)))
+            .map(|(i, s)| MetafileEntry::parse(s).map_err(|e| (i, e)))
             // TODO: refactor to be pure
             .inspect_err(|&(i, ref e)| err!("{} at line {}", &e, i + 1));
 
         let entries = if strict {
-            entries.map(|r| r.map_err(|(_, e)| e))
-                   .collect::<Result<_>>()?
+            entries
+                .map(|r| r.map_err(|(_, e)| e))
+                .collect::<Result<_>>()?
         } else {
             entries.filter_map(StdResult::ok).collect::<Vec<_>>()
         };
@@ -155,8 +160,7 @@ impl MetafileEntry {
     }
 
     pub fn dump(&self, dest: &mut dyn Write) -> Result<()> {
-        writeln!(dest, "{}", self)
-            .map_err(MetafileError::from)
+        writeln!(dest, "{}", self).map_err(MetafileError::from)
     }
 }
 

@@ -1,6 +1,7 @@
 mod git;
 mod iter_ext;
-#[macro_use] mod macros;
+#[macro_use]
+mod macros;
 mod metafile;
 
 use std::fs::{self, Permissions};
@@ -17,8 +18,7 @@ use nix::unistd;
 use metafile::{Metafile, MetafileEntry};
 
 
-const PRG_VERSION: &str =
-    concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
+const PRG_VERSION: &str = concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
 const DEFAULT_FILE_NAME: &str = ".metafile";
 
 static QUIET_ENABLED: AtomicBool = AtomicBool::new(false);
@@ -53,7 +53,7 @@ fn apply(mf_path: &Path, parse_strict: bool) {
                     unistd::chown(&expected.path, None, Some(expected.gid))
                         .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
-            },
+            }
             Err(e) => err!("warning: {}", e),
         }
     }
@@ -63,15 +63,15 @@ fn save(mf_path: &Path) {
     let entries = git::staged_files()
         .unwrap_or_else(|e| die!("failed to get list of staged files: {}", e))
         .into_iter()
-        .map(|path| MetafileEntry::from_path(&path)
-                        .unwrap_or_else(|e| die!("{}: {}", e, &path.display())))
+        .map(|path| {
+            MetafileEntry::from_path(&path)
+                .unwrap_or_else(|e| die!("{}: {}", e, &path.display()))
+        })
         .collect();
 
     Metafile::new(entries)
         .write(&mf_path)
-        .unwrap_or_else(|e| {
-            die!("failed to write metafile {}: {}", mf_path.display(), e)
-        });
+        .unwrap_or_else(|e| die!("failed to write metafile {}: {}", mf_path.display(), e));
 }
 
 
