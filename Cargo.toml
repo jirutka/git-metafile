@@ -11,6 +11,7 @@ homepage = "https://github.com/jirutka/git-metafile"
 repository = "https://github.com/jirutka/git-metafile"
 license = "MIT"
 keywords = ["git", "cli", "tool"]
+categories = ["command-line-utilities", "filesystem"]
 exclude = [".*", "README.adoc"]
 
 [dependencies]
