@@ -11,10 +11,22 @@ ifdef::env-github[]
 image:https://github.com/{gh-name}/workflows/CI/badge.svg[CI Status, link=https://github.com/{gh-name}/actions?query=workflow%3A%22CI%22]
 endif::env-github[]
 
-A simple tool for storing and restoring files metadata (mode, owner, group) in a git repository.
-It's designed especially for versioning /etc.
+A simple tool for storing and restoring complete files metadata (mode, owner, group) in a git repository.
+It’s designed especially for versioning /etc.
 
-// TODO: Add more information.
+Metadata is tracked using the `.metafile` file, which is automatically updated and added to commits.
+This file is in TSV (tab-separated values) format to be easily readable and diffable.
+
+._Sample .metafile_
+[source]
+----
+#%GIT-METAFILE 1
+# <path>	<mode>	<uid>	<gid>
+.gitignore	100644	0	0
+.metafile	100644	0	0
+profile.d	40755	0	0
+shadow	100640	0	42
+----
 
 
 == Installation
