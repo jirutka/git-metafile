@@ -34,8 +34,6 @@ pub trait IteratorExt: Iterator {
 
 impl<I: ?Sized> IteratorExt for I where I: Iterator {}
 
-
-
 #[cfg(test)]
 mod tests {
     use super::IteratorExt;

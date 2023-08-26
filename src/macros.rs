@@ -1,4 +1,3 @@
-
 macro_rules! die {
     ( $( $arg:tt )* ) => ({
         err!($( $arg )*);
@@ -48,8 +47,6 @@ macro_rules! tap {
         subj
     });
 }
-
-
 
 #[cfg(test)]
 mod tests {

@@ -17,16 +17,13 @@ use nix::unistd;
 
 use metafile::{Metafile, MetafileEntry};
 
-
 const PRG_VERSION: &str = concat![env!("CARGO_PKG_NAME"), " ", env!("CARGO_PKG_VERSION")];
 const DEFAULT_FILE_NAME: &str = ".metafile";
 
 static QUIET_ENABLED: AtomicBool = AtomicBool::new(false);
 
-
 // TODO refactor and improve error handling
 fn apply(mf_path: &Path, parse_strict: bool) {
-
     let entries = match Metafile::read(mf_path, parse_strict) {
         Ok(mf) => mf.entries.into_iter(),
         Err(e) => die!("failed to read metafile: {}", e),
@@ -39,17 +36,26 @@ fn apply(mf_path: &Path, parse_strict: bool) {
                 let path = &expected.path.display();
 
                 if expected.mode != current.mode {
-                    info!("{}: change mode {:o} -> {:o}", &path, current.mode, expected.mode);
+                    info!(
+                        "{}: change mode {:o} -> {:o}",
+                        &path, current.mode, expected.mode
+                    );
                     fs::set_permissions(&expected.path, Permissions::from_mode(expected.mode))
                         .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
                 if expected.uid != current.uid {
-                    info!("{}: change owner {} -> {}", &path, current.uid, expected.uid);
+                    info!(
+                        "{}: change owner {} -> {}",
+                        &path, current.uid, expected.uid
+                    );
                     unistd::chown(&expected.path, Some(expected.uid), None)
                         .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
                 if expected.gid != current.gid {
-                    info!("{}: change group {} -> {}", &path, current.gid, expected.gid);
+                    info!(
+                        "{}: change group {} -> {}",
+                        &path, current.gid, expected.gid
+                    );
                     unistd::chown(&expected.path, None, Some(expected.gid))
                         .unwrap_or_else(|e| err!("{}: {}", &path, e));
                 }
@@ -64,8 +70,7 @@ fn save(mf_path: &Path) {
         .unwrap_or_else(|e| die!("failed to get list of staged files: {}", e))
         .into_iter()
         .map(|path| {
-            MetafileEntry::from_path(&path)
-                .unwrap_or_else(|e| die!("{}: {}", e, &path.display()))
+            MetafileEntry::from_path(&path).unwrap_or_else(|e| die!("{}: {}", e, &path.display()))
         })
         .collect();
 
@@ -73,7 +78,6 @@ fn save(mf_path: &Path) {
         .write(mf_path)
         .unwrap_or_else(|e| die!("failed to write metafile {}: {}", mf_path.display(), e));
 }
-
 
 fn main() {
     let mut command = String::new();

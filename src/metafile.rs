@@ -13,12 +13,10 @@ use quick_error::quick_error;
 
 use crate::iter_ext::IteratorExt;
 
-
 const METAFILE_VERSION: u32 = 1;
 const METAFILE_HEADER: &str = "#%GIT-METAFILE";
 
 pub type Result<T> = StdResult<T, MetafileError>;
-
 
 quick_error! {
     #[derive(Debug)]
@@ -51,9 +49,7 @@ pub struct MetafileEntry {
     pub gid: Gid,
 }
 
-
 impl Metafile {
-
     pub fn new(entries: Vec<MetafileEntry>) -> Metafile {
         Metafile { entries }
     }
@@ -71,7 +67,7 @@ impl Metafile {
             // (usize, Result<T, E>) -> Result<(usize, T), (usize, E)>
             .map(|(i, r)| r.map(|s| (i, s)).map_err(|e| (i, e)))
             // Result<(usize, T), (usize, E)> -> Ok((usize, T))
-            .filter_map(StdResult::ok);  // XXX: report encoding errors?
+            .filter_map(StdResult::ok); // XXX: report encoding errors?
 
         let version = lines
             .next()
@@ -114,9 +110,11 @@ impl Metafile {
     }
 
     pub fn dump(self, dest: &mut dyn Write) -> Result<()> {
-
-        write!(dest, "{} {}\n# <path>\t<mode>\t<uid>\t<gid>\n",
-               METAFILE_HEADER, METAFILE_VERSION)?;
+        write!(
+            dest,
+            "{} {}\n# <path>\t<mode>\t<uid>\t<gid>\n",
+            METAFILE_HEADER, METAFILE_VERSION
+        )?;
 
         for entry in self.entries {
             entry.dump(dest)?;
@@ -129,7 +127,6 @@ impl Metafile {
 }
 
 impl MetafileEntry {
-
     pub fn from_path<P: AsRef<Path>>(path: P) -> Result<MetafileEntry> {
         let path = path.as_ref();
 
@@ -165,9 +162,14 @@ impl MetafileEntry {
 }
 
 impl Display for MetafileEntry {
-
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}\t{:o}\t{}\t{}",
-               self.path.display(), self.mode, self.uid, self.gid)
+        write!(
+            f,
+            "{}\t{:o}\t{}\t{}",
+            self.path.display(),
+            self.mode,
+            self.uid,
+            self.gid
+        )
     }
 }
