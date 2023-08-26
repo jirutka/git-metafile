@@ -27,16 +27,9 @@ jobs:
     env:
       CARGO: ${{ startsWith(matrix.target, 'x86_64') && 'cargo' || 'cross' }}
       OUTPUT_DIR: target/${{ matrix.target }}/release
-      STRIP: strip
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Install llvm and set STRIP=llvm-strip
-        if: ${{ runner.os == 'Linux' }}
-        run: |
-          sudo apt-get install llvm
-          echo 'STRIP=llvm-strip' >> $GITHUB_ENV
 
       - name: Install Rust stable for ${{ matrix.target }}
         uses: dtolnay/rust-toolchain@stable
@@ -64,9 +57,6 @@ jobs:
 
       - name: Build release binary
         run: $CARGO build --locked --release --target ${{ matrix.target }} --verbose
-
-      - name: Strip release binary
-        run: $STRIP $OUTPUT_DIR/$CRATE_NAME
 
       - name: Create tarball
         run: |
