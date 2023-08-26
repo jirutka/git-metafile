@@ -1,5 +1,3 @@
-use std::result::Result;
-
 pub struct InspectErr<I, F> {
     iter: I,
     f: F,

@@ -6,10 +6,8 @@ mod metafile;
 
 use std::fs::{self, Permissions};
 use std::io::Write;
-use std::iter::{IntoIterator, Iterator};
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
-use std::str;
 use std::sync::atomic::{AtomicBool, Ordering};
 
 use argparse::{ArgumentParser, Parse, Print, Store, StoreTrue};

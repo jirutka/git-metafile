@@ -1,7 +1,6 @@
-use std::convert::From;
-use std::fmt::{self, Display};
+use std::fmt;
 use std::fs::File;
-use std::io::{BufRead, BufReader, BufWriter, Error as IoError, Read, Write};
+use std::io::{self, BufRead, BufReader, BufWriter, Read, Write};
 use std::num::ParseIntError;
 use std::os::unix::fs::MetadataExt;
 use std::path::{Path, PathBuf};
@@ -21,7 +20,7 @@ pub type Result<T> = StdResult<T, MetafileError>;
 quick_error! {
     #[derive(Debug)]
     pub enum MetafileError {
-        Io(err: IoError) {
+        Io(err: io::Error) {
             from()
             source(err)
             display("{}", err)
@@ -161,7 +160,7 @@ impl MetafileEntry {
     }
 }
 
-impl Display for MetafileEntry {
+impl fmt::Display for MetafileEntry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
