@@ -43,7 +43,6 @@ jobs:
             os: macos-latest
     runs-on: ${{ matrix.os || 'ubuntu-latest' }}
     env:
-      CARGO_BUILD_TARGET: ${{ matrix.target }}
       CARGO_TERM_VERBOSE: 'true'
     steps:
       - name: Checkout repository
@@ -56,14 +55,10 @@ jobs:
           toolchain: ${{ matrix.rust }}
 
       - name: Build binary
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
+        run: cargo build --target ${{ matrix.target }}
 
       - name: Run tests
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
+        run: cargo test --target ${{ matrix.target }}
 
       - name: Upload binaries to artifacts
         if: matrix.rust == 'stable'
