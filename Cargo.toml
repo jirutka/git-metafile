@@ -18,7 +18,7 @@ exclude = [".*", "README.adoc"]
 argparse = "^0.2.0"
 boolinator = "^2.4"
 quick-error = "^2.0"
-nix = "^0.24.0"
+nix = "^0.26.0"
 
 [profile.release]
 codegen-units = 1
