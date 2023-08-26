@@ -6,7 +6,6 @@ use std::os::unix::fs::MetadataExt;
 use std::path::{Path, PathBuf};
 use std::result::Result as StdResult;
 
-use boolinator::Boolinator;
 use nix::unistd::{Gid, Uid};
 use quick_error::quick_error;
 
@@ -70,7 +69,7 @@ impl Metafile {
 
         let version = lines
             .next()
-            .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).as_some(s))
+            .and_then(|(_, s)| s.starts_with(METAFILE_HEADER).then_some(s))
             .and_then(|s| {
                 s.trim_start_matches(METAFILE_HEADER)
                     .trim()
