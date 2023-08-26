@@ -79,6 +79,7 @@ ____
 {releases-uri}/{name}-{version}-riscv64gc-linux-gnu.tar.gz[[riscv64gc\]] +
  *macOS*:
 {releases-uri}/{name}-{version}-x86_64-apple-darwin.tar.gz[[x86_64\]]
+{releases-uri}/{name}-{version}-aarch64-apple-darwin.tar.gz[[aarch64\]]footnote:[aarch64-apple-darwin is so called “Apple Silicon”.]
 ____
 
 . Install git (use your system’s package manager).
