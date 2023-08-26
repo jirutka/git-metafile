@@ -70,7 +70,7 @@ fn save(mf_path: &Path) {
         .collect();
 
     Metafile::new(entries)
-        .write(&mf_path)
+        .write(mf_path)
         .unwrap_or_else(|e| die!("failed to write metafile {}: {}", mf_path.display(), e));
 }
 

@@ -10,7 +10,7 @@ use std::str;
 
 pub fn repo_root() -> Result<PathBuf> {
     let output = Command::new("git")
-        .args(&["rev-parse", "--show-toplevel"])
+        .args(["rev-parse", "--show-toplevel"])
         .output()?;
 
     let path = str::from_utf8(&output.stdout)
@@ -52,7 +52,7 @@ pub fn staged_files() -> Result<BTreeSet<PathBuf>> {
 
 fn ls_files<S: AsRef<OsStr>>(args: &[S]) -> Result<Vec<PathBuf>> {
     let output = Command::new("git")
-        .args(&["ls-files", "--full-name", "-z"])
+        .args(["ls-files", "--full-name", "-z"])
         .args(args)
         .env("LC_ALL", "C")
         .output()?;

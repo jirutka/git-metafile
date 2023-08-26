@@ -1,9 +1,8 @@
 
 macro_rules! die {
     ( $( $arg:tt )* ) => ({
-        use std::process::exit;
         err!($( $arg )*);
-        exit(1);
+        ::std::process::exit(1);
     });
 }
 
@@ -27,8 +26,7 @@ macro_rules! info {
 #[doc(hidden)]
 macro_rules! println_err {
     ( $( $arg:tt )* ) => ({
-        use std::io::stderr;
-        writeln!(&mut stderr(), $( $arg )*)
+        writeln!(&mut ::std::io::stderr(), $( $arg )*)
             .expect("Failed to write to stderr!");
     });
 }

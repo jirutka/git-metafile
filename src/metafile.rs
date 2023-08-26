@@ -89,7 +89,7 @@ impl Metafile {
         }
 
         let entries = lines
-            .filter(|&(_, ref s)| !s.is_empty() && !s.starts_with('#'))
+            .filter(|(_, ref s)| !s.is_empty() && !s.starts_with('#'))
             // (usize, &str) -> Result<Metafile, (usize, MetafileError)>
             .map(|(i, s)| MetafileEntry::parse(s).map_err(|e| (i, e)))
             // TODO: refactor to be pure
