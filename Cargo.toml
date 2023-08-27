@@ -15,7 +15,7 @@ categories = ["command-line-utilities", "filesystem"]
 exclude = [".*", "README.adoc"]
 
 [dependencies]
-argparse = "^0.2.0"
+argp = "^0.3.0"
 quick-error = "^2.0"
 nix = "^0.26.0"
 
